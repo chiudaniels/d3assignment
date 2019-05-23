@@ -33,9 +33,10 @@ var d = new Date(testdate);
 const monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
-$("#testDate").html("Test Date: " + monthNames[d.getMonth()] +" " +d.getDay() +", " + d.getFullYear());
-$("#testDate").append('<br> <div style="padding-right: 2%"> <button class="btn btn-secondary hidden-print" onclick="myFunction()"<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button> </div>');
-$("#testDate").css({"text-align":"right", "padding-right":"2%", "padding-top":"2%"});
+var dateText = "Test Date: " + monthNames[d.getMonth()] +" " +d.getDay() +", " + d.getFullYear()
+$("#testDate").append('<text style ="padding-right:1%" >' +dateText +'</text>');
+$("#testDate").append('<button class="btn btn-secondary hidden-print" onclick="myFunction()"<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button>');
+$("#testDate").css({"text-align":"right", "padding-left":"2%", "padding-right":"5%", "padding-top":"2%"});
 
 function myFunction() {
     window.print();
@@ -57,8 +58,10 @@ var g = svg.append("g");
 var graphLength = $("#graphPart").width() / 2 * .75;
 //length of individual section of box
 sectionLength = graphLength / 4,
-    sectionHeight = svgHeight * .1,
+    sectionHeight = svgHeight * .15,
     graphXStart = svgWidth * .115;
+    graphYStart = svgHeight * .45;
+
 
 d3.select('#graphPart')
     .style("padding", 0)
@@ -97,7 +100,7 @@ var i,
     graphColors = ["#dfe0e2", "#89bd7b", "#ffb877", "#ff6839"];
 for (i = 0; i < 4; i++) {
     g.append('rect')
-        .attr("y", svgHeight * .5)
+        .attr("y", graphYStart)
         .attr("x", graphXStart + (sectionLength * i))
         .attr("width", sectionLength)
         .attr("height", sectionHeight)
@@ -106,7 +109,7 @@ for (i = 0; i < 4; i++) {
         .style("stroke-width", ".07rem");
     if (i != 4) {
         g.append('text')
-            .attr("y", svgHeight * .65)
+            .attr("y", graphYStart + svgHeight * .20)
             .attr("x", graphXStart + (sectionLength * i))
             .text(secMax[i])
             .style("size", "1rem")
@@ -120,13 +123,13 @@ for (i = 0; i < 4; i++) {
 g.append('line')
     .attr("x1", graphXStart + (sectionLength * sectionPos) + (sectionLength * secPosPercentage))
     .attr("x2", graphXStart + (sectionLength * sectionPos) + (sectionLength * secPosPercentage))
-    .attr("y1", svgHeight * .4)
-    .attr("y2", svgHeight * .5 + sectionHeight)
-    .style("stroke", "grey")
+    .attr("y1", graphYStart - svgHeight * .015)
+    .attr("y2", graphYStart + svgHeight * .015 + sectionHeight)
+    .style("stroke", "#3ea6f3")
     .style("stroke-width", ".2rem")
 
 g.append('text')
-    .attr("y", svgHeight * .35)
+    .attr("y",  graphYStart - svgHeight * .05)
     .attr("x", graphXStart + (sectionLength * sectionPos) + (sectionLength * (secPosPercentage - .15)))
     .text(bmi)
     .style("size", "1rem")
@@ -137,14 +140,14 @@ g.append('text')
 
 //low text
 g.append('text')
-    .attr("y", svgHeight * .45)
+    .attr("y", graphYStart - svgHeight * .05)
     .attr("x", graphXStart * .8)
     .text("Low")
     .style("fill", "white")
     .style("size", "1rem");
 //high text
 g.append('text')
-    .attr("y", svgHeight * .45)
+    .attr("y", graphYStart - svgHeight * .05)
     .attr("x", graphXStart * .8 + sectionLength * 4)
     .text("High")
     .style("fill", "white")
@@ -258,7 +261,7 @@ heightDesc.append('p')
     .style("color", "#f2740c");
 
 heightDesc.append('p')
-    .style("padding", "3rem");
+    .style("padding", "3.75rem");
 
 heightDesc.append('p')
     .text(height + " in")
