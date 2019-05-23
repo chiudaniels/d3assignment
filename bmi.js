@@ -2,8 +2,8 @@
 var screenHeight = $(window).height(),
     screenWidth = $(window).width();
 
-var svgHeight = screenHeight * .5,
-    svgWidth = screenWidth * .3,
+var svgHeight = screenHeight * .41,
+    svgWidth = screenWidth * .46,
     svgMargin = screenWidth * .05,
     svgXPos = screenWidth * .1,
     svgYPos = screenHeight * .1;
@@ -20,11 +20,29 @@ $("body").css({ "font-family": "Avenir Next" })
 var weight = 95.55,
     height = 61.3,
     name = "Rosie",
+    testdate = "05/09/2019"
     bmi = Math.round((weight / (height * height) * 703) * 100) / 100;
 //
 
 d3.select("body")
     .style("font", "Avenir Next");
+
+
+//test date and print button//
+var d = new Date(testdate);
+const monthNames = ["January", "February", "March", "April", "May", "June",
+  "July", "August", "September", "October", "November", "December"
+];
+$("#testDate").html("Test Date: " + monthNames[d.getMonth()] +" " +d.getDay() +", " + d.getFullYear());
+$("#testDate").append('<br> <div style="padding-right: 2%"> <button class="btn btn-secondary hidden-print" onclick="myFunction()"<span class="glyphicon glyphicon-print" aria-hidden="true"></span> Print</button> </div>');
+$("#testDate").css({"text-align":"right", "padding-right":"2%", "padding-top":"2%"});
+
+function myFunction() {
+    window.print();
+}
+
+//
+
 
 //make bmi graph
 var svg = d3.select("#bmiGraph").append("svg")
@@ -40,10 +58,11 @@ var graphLength = $("#graphPart").width() / 2 * .75;
 //length of individual section of box
 sectionLength = graphLength / 4,
     sectionHeight = svgHeight * .1,
-    graphXStart = svgWidth * .15;
+    graphXStart = svgWidth * .115;
 
 d3.select('#graphPart')
-    .style("padding", 0);
+    .style("padding", 0)
+    .style("background","black");
 
 
 //set up position for bmi indicator
@@ -75,7 +94,7 @@ else {
 
 // make boxes for the graph
 var i,
-    graphColors = ["white", "green", "orange", "red"];
+    graphColors = ["#dfe0e2", "#89bd7b", "#ffb877", "#ff6839"];
 for (i = 0; i < 4; i++) {
     g.append('rect')
         .attr("y", svgHeight * .5)
@@ -130,13 +149,6 @@ g.append('text')
     .text("High")
     .style("fill", "white")
     .style("size", "1rem");
-//bmi text
-g.append('text')
-    .attr("y", svgHeight * .15)
-    .attr("x", svgWidth * .45)
-    .text("BMI")
-    .style("fill", "white")
-    .style("font-size", "2rem");
 
 // end of make bmi graph
 
@@ -145,31 +157,28 @@ var title = d3.select("#bmiTitle")
     .style("padding", "70px")
     .style("text-align", "center");
 
-var bmiTitle = name + ", you have ";
+var bmiTitle = name + ", you have a ";
 switch (sectionPos) {
     case 0:
-        console.log("case 0");
-        bmiTitle += "an underweight BMI: ";
+        bmiTitle += "somewhat low BMI of ";
         break;
     case 1:
-        console.log("case 1");
-        bmiTitle += "a healthy BMI: ";
+        bmiTitle += "healthy BMI of ";
         break;
     case 2:
-        console.log("case 2");
-        bmiTitle += "an overweight BMI: ";
+        bmiTitle += "somewhat high BMI of ";
         break;
     case 3:
-        console.log("case 3");
-        bmiTitle += "an obese BMI: ";
+        bmiDesc += "high BMI of ";
         break;
 }
+
 bmiTitle += bmi;
 
 title.append('text')
     .text(bmiTitle)
     .attr("width", "100%")
-    .style("font-size", "3rem")
+    .style("font-size", "3.75rem")
 //end of bmi title
 
 //bmi desc
@@ -184,20 +193,13 @@ d3.select("#descPart")
     .style("vertical-align", "text-top")
     .style("background-color", "#EEEEEE")
 
-var bmiDesc = "Your BMI (Body Mass Index) is in the ";
-switch (sectionPos) {
-    case 0:
-        bmiDesc += "underweight range.";
-        break;
-    case 1:
-        bmiDesc += "healthy range.";
-        break;
-    case 2:
-        bmiDesc += "overweight range.";
-        break;
-    case 3:
-        bmiDesc += "obese range.";
-        break;
+var bmiDesc = "Your BMI (Body Mass Index) is ";
+
+if (sectionPos != 1){
+    bmiDesc += "outside the healthy range.";
+}
+else{
+    bmiDesc += "in the healthy range.";
 }
 
 desc.append('p')
@@ -233,15 +235,17 @@ var weightDesc = d3.select("#weight")
 
 weightDesc.append('p')
     .text("Body Weight")
-    .style("font-size", "4rem")
-    .style("color", "white");
+    .style("font-size", "3.75rem")
+    .style("color", "white")
+    .style("padding-left","1.5%");
 
 weightDesc.append('p')
-    .style("padding", "3rem");
+    .style("padding", "3.75rem");
 
 weightDesc.append('p')
     .text(weight + " lb")
-    .style("font-size", "3rem");
+    .style("padding-left","1.5%")    
+    .style("font-size", "3.75rem");
 
 var heightDesc = d3.select("#height")
     .style("vertical-align", "text-top")
@@ -249,7 +253,8 @@ var heightDesc = d3.select("#height")
 
 heightDesc.append('p')
     .text("Height")
-    .style("font-size", "4rem")
+    .style("font-size", "3.75rem")
+    .style("padding-left","1.5%")    
     .style("color", "#f2740c");
 
 heightDesc.append('p')
@@ -257,7 +262,8 @@ heightDesc.append('p')
 
 heightDesc.append('p')
     .text(height + " in")
-    .style("font-size", "3rem");
+    .style("padding-left","1.5%")
+    .style("font-size", "3.75rem");
 
 //end of body and height text
 
